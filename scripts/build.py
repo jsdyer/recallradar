@@ -2,7 +2,7 @@
 import argparse
 from collections import defaultdict
 import csv
-from datetime import date
+from datetime import date, datetime, timezone
 import gzip
 import io
 import json
@@ -112,7 +112,11 @@ def main():
     sources = args.parse_args()
     health = sources.health_file.read_bytes() if sources.health_file else download(HEALTH, 64 * 1024 ** 2)
     transport_input = sources.transport_file.read_bytes() if sources.transport_file else download(TRANSPORT, 8 * 1024 ** 2)
+    retrieved = None
+    if not (sources.health_file or sources.transport_file):
+        retrieved = datetime.now(timezone.utc).isoformat(timespec='seconds')
     snapshot = merged_snapshot(health, transport_details(transport_input))
+    snapshot['retrievedAt'] = retrieved
     output = ROOT / 'dist'
     with tempfile.TemporaryDirectory(dir=ROOT) as work:
         stage = Path(work) / 'site'
@@ -120,6 +124,9 @@ def main():
         payload = json.dumps(snapshot, ensure_ascii=False, separators=(',', ':')).encode()
         (stage / 'notices.json').write_bytes(payload)
         (stage / 'notices.json.gz').write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))
+        status = {key: snapshot[key] for key in ('retrievedAt', 'built', 'transportUpdated', 'matched')}
+        status['records'] = len(snapshot['rows'])
+        (stage / 'data-status.json').write_text(json.dumps(status) + '\n', encoding='utf-8')
         if output.exists():
             shutil.rmtree(output)
         stage.rename(output)

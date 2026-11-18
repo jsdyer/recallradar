@@ -158,7 +158,8 @@ try {
     ...item, search: normalized([item.title, item.product, item.issue, item.number, item.category,
       ...(item.transport?.vehicles.flat() ?? [])].filter(Boolean).join(' ')),
   }));
-  $('updated').textContent = `Snapshot built ${snapshot.built}. ${format.format(snapshot.matched)} notices include matched vehicle details. Latest update in the vehicle feed ${snapshot.transportUpdated || 'unavailable'}.`;
+  const dataDate = snapshot.retrievedAt ? `Data retrieved ${snapshot.retrievedAt.slice(0, 10)} UTC.` : `Snapshot built ${snapshot.built}.`;
+  $('updated').textContent = `${dataDate} ${format.format(snapshot.matched)} notices include matched vehicle details. Latest update in the vehicle feed ${snapshot.transportUpdated || 'unavailable'}.`;
   render();
 } catch {
   $('status').textContent = 'The snapshot could not be loaded. Try reloading or open the official sources below.';

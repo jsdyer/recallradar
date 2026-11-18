@@ -10,3 +10,5 @@ python3 -m http.server --directory dist 8000
 ```
 
 Build using optional local files with `--health-file` and `--transport-file`. GitHub Actions refreshes the snapshot daily and supports manual dispatch. The prior deployment remains available if an official download or validation fails.
+
+The [snapshot metadata](https://coolcode.ca/recallradar/data-status.json) gives the retrieval timestamp, snapshot build date, record count, number of matched vehicle notices, and latest update recorded in the vehicle feed. Builds using saved input files leave the retrieval timestamp empty.
