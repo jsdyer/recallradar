@@ -1,0 +1,30 @@
+{
+  "id": "recallradar",
+  "title": "Recall Radar",
+  "description": "Search Canadian safety alerts and check affected vehicle makes, models and years.",
+  "category": "disclosures",
+  "tags": [
+    "health",
+    "canada",
+    "transport",
+    "canada",
+    "recalls",
+    "safety",
+    "food",
+    "appliances",
+    "cars",
+    "model",
+    "tires",
+    "alerts"
+  ],
+  "icon": "shield-alert",
+  "url": "/recallradar/",
+  "source": "https://github.com/jsdyer/recallradar",
+  "hosting": "project",
+  "access": "browser",
+  "data_info": {
+    "mode": "snapshot",
+    "detail": "Health Canada recall notices appear alongside Transport Canada’s 60-day vehicle recall file.",
+    "cadence": "Daily"
+  }
+}
