@@ -16,3 +16,11 @@ python3 -m http.server --directory dist 8000
 Build using optional local files with `--health-file` and `--transport-file`. GitHub Actions refreshes the snapshot daily and supports manual dispatch. The prior deployment remains available if an official download or validation fails.
 
 The [snapshot metadata](https://coolcode.ca/recallradar/data-status.json) gives the retrieval timestamp, snapshot build date, record count, number of matched vehicle notices, and latest update recorded in the vehicle feed. Builds using saved input files leave the retrieval timestamp empty.
+
+<!-- schedule-reliability -->
+## Schedule reliability
+
+Public GitHub repositories can have scheduled workflows disabled after 60 days of inactivity. A separate weekly [schedule guard](.github/workflows/schedule-guard.yml) calls GitHub's enable-workflow API for an explicit list of refresh workflows and itself. It can restore workflows disabled for inactivity, preserves manually disabled workflows, and runs independently of collection failures.
+
+This is an interim mitigation, not a scheduling guarantee: GitHub does not document active-workflow renewal as a permanent exemption, and scheduled runs can be delayed or dropped. A scheduler on our own Linux server is the planned independent trigger. The guard does not collect data, create dummy commits, or change source/check timestamps; successful collection and published data freshness still need monitoring.
+<!-- /schedule-reliability -->
