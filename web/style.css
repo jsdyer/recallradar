@@ -56,3 +56,9 @@ button[type="submit"] { background: var(--accent); color: #162017; border-color:
 .card summary { cursor: pointer; }
 .card ul, .source ul { padding-left: 1.3rem; }
 @media (max-width: 480px) { .wrap { width: calc(100% - 1rem); } .filters button { width: 100%; } }
+
+.task-entries { display: flex; flex-wrap: wrap; gap: .55rem 1.1rem; margin: .7rem 0; }
+.task-entries a { color: inherit; text-decoration: underline; text-underline-offset: .16em; }
+.task-entries a:first-child { font-weight: bold; }
+.tool-name { font-size: .95rem; margin: .25rem 0; }
+h1 { overflow-wrap: anywhere; }

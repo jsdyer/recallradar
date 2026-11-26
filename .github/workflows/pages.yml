@@ -23,6 +23,8 @@ jobs:
         with:
           persist-credentials: false
       - uses: actions/configure-pages@v5
+      - name: Verify model and year matching
+        run: node --test tests/vehicle_search.mjs
       - name: Build the static application
         run: |
           if test -f requirements.txt; then

@@ -24,3 +24,8 @@ Public GitHub repositories can have scheduled workflows disabled after 60 days o
 
 The separate schedule guard remains a mitigation, not a scheduling guarantee. The independent [CoolCode refresh watchdog](https://github.com/jsdyer/jsdyer.github.io/blob/main/services/refresh-watchdog/README.md) is maintained in GitHub and uses the generated workflow and freshness registry; do not maintain another target list here. Using it requires installation on a Linux server and GitHub credentials with access to this repository. A generated target does not prove that a private server has adopted it; verify the installed service's report. The guard does not collect data, create dummy commits or change source/check timestamps. Successful collection and published data freshness still need monitoring.
 <!-- /schedule-reliability -->
+
+## Ready-to-use searches
+
+- [Ford F-150 Recalls in Canada](https://coolcode.ca/recallradar/ford-f150.html). See notices with an exact Ford F-150 model entry in the retained Transport Canada data. Choose a model year to narrow the list. Open the official notice to confirm applicable vehicles and repair instructions.
+- [Ford Escape Recalls in Canada](https://coolcode.ca/recallradar/ford-escape.html). Review Ford Escape safety notices and the model years listed by Transport Canada. Recent joined records include model details. For a complete history or an individual vehicle, follow the official recall and manufacturer VIN lookup guidance.

@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "ford-f150",
+    "title": "Ford F-150 Recalls in Canada",
+    "description": "See notices with an exact Ford F-150 model entry in the retained Transport Canada data. Choose a model year to narrow the list. Open the official notice to confirm applicable vehicles and repair instructions.",
+    "setting": "vehicle",
+    "value": "FORD F-150"
+  },
+  {
+    "slug": "ford-escape",
+    "title": "Ford Escape Recalls in Canada",
+    "description": "Review Ford Escape safety notices and the model years listed by Transport Canada. Recent joined records include model details. For a complete history or an individual vehicle, follow the official recall and manufacturer VIN lookup guidance.",
+    "setting": "vehicle",
+    "value": "FORD ESCAPE"
+  }
+]

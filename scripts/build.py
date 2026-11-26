@@ -14,6 +14,8 @@ import time
 from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
+from public_pages import publish_pages
+
 ROOT = Path(__file__).resolve().parents[1]
 HEALTH = 'https://recalls-rappels.canada.ca/sites/default/files/opendata-donneesouvertes/HCRSAMOpenData.json'
 TRANSPORT = 'https://opendatatc.tc.canada.ca/vrdb_60days_daily.csv'
@@ -121,6 +123,8 @@ def main():
     with tempfile.TemporaryDirectory(dir=ROOT) as work:
         stage = Path(work) / 'site'
         shutil.copytree(ROOT / 'web', stage)
+        page = (stage / 'index.html').read_text(encoding='utf-8')
+        publish_pages(stage, page, json.loads((ROOT / 'tool.json').read_text(encoding='utf-8')), snapshot)
         payload = json.dumps(snapshot, ensure_ascii=False, separators=(',', ':')).encode()
         (stage / 'notices.json').write_bytes(payload)
         (stage / 'notices.json.gz').write_bytes(gzip.compress(payload, compresslevel=6, mtime=0))

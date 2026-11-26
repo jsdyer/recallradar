@@ -1,3 +1,4 @@
+import {vehicleMatches} from './vehicles.mjs';
 const $ = (id) => document.getElementById(id);
 const pageSize = 24;
 const storageKey = 'coolcode-recallradar-watch-v1';
@@ -31,10 +32,11 @@ function button(label, action, accessibleName) {
 
 function filters() {
   return { query: normalized($('query').value).split(' ').filter(Boolean),
-    issuer: $('issuer').value, archived: $('archive').checked };
+    issuer: $('issuer').value, vehicle: $('vehicle').value, year: $('model-year').value, archived: $('archive').checked };
 }
 
-function matches(item, { query, issuer, archived }) {
+function matches(item, { query, issuer, archived, vehicle, year }) {
+  if (!vehicleMatches(item, vehicle, year)) return false;
   if (!archived && item.archived) return false;
   if (issuer === 'other' && (item.org === 'TC' || item.org === 'CFIA')) return false;
   if (issuer && issuer !== 'other' && issuer !== item.org) return false;
@@ -87,6 +89,15 @@ function render() {
   $('next').disabled = page + 1 >= totalPages;
 }
 
+const vehicleYears = new Map();
+function populateYears() {
+  const years = [...(vehicleYears.get($('vehicle').value) || [])].sort().reverse();
+  $('model-year').replaceChildren(new Option('Any model year', ''), ...years.map(year => new Option(year, year)));
+  $('model-year').disabled = !years.length;
+}
+$('vehicle').addEventListener('change', () => { populateYears(); update(); });
+$('model-year').addEventListener('change', update);
+
 function displayTerms() {
   $('watchlist').hidden = saved.length === 0;
   $('saved').replaceChildren(...saved.map((term) => {
@@ -94,6 +105,8 @@ function displayTerms() {
     item.append(button(term, () => {
       $('query').value = term;
       $('issuer').value = '';
+      $('vehicle').value = '';
+      populateYears();
       $('archive').checked = false;
       page = 0;
       render();
@@ -132,6 +145,7 @@ $('save').addEventListener('click', () => {
 });
 $('reset').addEventListener('click', () => {
   $('search').reset();
+  populateYears();
   $('archive').checked = false;
   update();
   $('query').focus();
@@ -158,6 +172,22 @@ try {
     ...item, search: normalized([item.title, item.product, item.issue, item.number, item.category,
       ...(item.transport?.vehicles.flat() ?? [])].filter(Boolean).join(' ')),
   }));
+  for (const item of items) {
+    for (const [make, model, year] of item.transport?.vehicles || []) {
+      if (!make || !model) continue;
+      const label = make + ' ' + model;
+      if (!vehicleYears.has(label)) vehicleYears.set(label, new Set());
+      if (year) vehicleYears.get(label).add(String(year));
+    }
+  }
+  const startingVehicle = document.body.dataset.vehicle;
+  if (startingVehicle && !vehicleYears.has(startingVehicle)) vehicleYears.set(startingVehicle, new Set());
+  for (const model of [...vehicleYears.keys()].sort()) $('vehicle').append(new Option(model, model));
+  if (startingVehicle) {
+    $('vehicle').value = startingVehicle;
+    $('issuer').value = 'TC';
+  }
+  populateYears();
   const dataDate = snapshot.retrievedAt ? `Data retrieved ${snapshot.retrievedAt.slice(0, 10)} UTC.` : `Snapshot built ${snapshot.built}.`;
   $('updated').textContent = `${dataDate} ${format.format(snapshot.matched)} notices include matched vehicle details. Latest update in the vehicle feed ${snapshot.transportUpdated || 'unavailable'}.`;
   render();
