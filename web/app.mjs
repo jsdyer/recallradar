@@ -32,10 +32,12 @@ function button(label, action, accessibleName) {
 
 function filters() {
   return { query: normalized($('query').value).split(' ').filter(Boolean),
+    category: $('category').value ? $('category').selectedOptions[0].textContent : '',
     issuer: $('issuer').value, vehicle: $('vehicle').value, year: $('model-year').value, archived: $('archive').checked };
 }
 
-function matches(item, { query, issuer, archived, vehicle, year }) {
+function matches(item, { query, issuer, archived, vehicle, year, category }) {
+  if (category && !item.categories.includes(category)) return false;
   if (!vehicleMatches(item, vehicle, year)) return false;
   if (!archived && item.archived) return false;
   if (issuer === 'other' && (item.org === 'TC' || item.org === 'CFIA')) return false;
@@ -105,6 +107,8 @@ function displayTerms() {
     item.append(button(term, () => {
       $('query').value = term;
       $('issuer').value = '';
+      $('category').value = '';
+      syncCategory();
       $('vehicle').value = '';
       populateYears();
       $('archive').checked = false;
@@ -134,6 +138,17 @@ function update() {
 
 $('search').addEventListener('submit', (event) => { event.preventDefault(); update(); });
 $('query').addEventListener('input', update);
+function syncCategory() {
+  const url = new URL(location.href);
+  if ($('category').value) url.searchParams.set('category', $('category').value);
+  else url.searchParams.delete('category');
+  history.replaceState(null, '', url);
+}
+const categoryPreset = new URL(location.href).searchParams.get('category');
+if (categoryPreset && Array.from($('category').options).some(option => option.value === categoryPreset)) {
+  $('category').value = categoryPreset;
+}
+$('category').addEventListener('change', () => { syncCategory(); update(); });
 $('issuer').addEventListener('change', update);
 $('archive').addEventListener('change', update);
 $('save').addEventListener('click', () => {
@@ -145,6 +160,7 @@ $('save').addEventListener('click', () => {
 });
 $('reset').addEventListener('click', () => {
   $('search').reset();
+  syncCategory();
   populateYears();
   $('archive').checked = false;
   update();
@@ -169,7 +185,8 @@ async function loadSnapshot() {
 try {
   const snapshot = await loadSnapshot();
   items = snapshot.rows.map((item) => ({
-    ...item, search: normalized([item.title, item.product, item.issue, item.number, item.category,
+    ...item, categories: (item.category || '').split(' - ').map(label => label.trim()),
+    search: normalized([item.title, item.product, item.issue, item.number, item.category,
       ...(item.transport?.vehicles.flat() ?? [])].filter(Boolean).join(' ')),
   }));
   for (const item of items) {

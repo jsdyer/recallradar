@@ -1,7 +1,7 @@
 # Recall Radar
 
 <!-- coolcode:guide -->
-Save a product or brand as a search term, then revisit to check matching notices and read the issuing agency’s instructions. The watchlist runs when you visit and does not send background notifications.
+Browse product topics to check the latest updated notices, or select a category and search for a product or brand. Save a search term, then revisit to check matching notices and read the issuing agency’s instructions. The watchlist runs when you visit and does not send background notifications.
 <!-- /coolcode:guide -->
 
 Search Canadian recall and safety notices by text, issuer and archive status. Save search terms in this browser. The watchlist runs on visits and has no background notifications.
@@ -24,6 +24,10 @@ Public GitHub repositories can have scheduled workflows disabled after 60 days o
 
 The separate schedule guard remains a mitigation, not a scheduling guarantee. The independent [CoolCode refresh watchdog](https://github.com/jsdyer/jsdyer.github.io/blob/main/services/refresh-watchdog/README.md) is maintained in GitHub and uses the generated workflow and freshness registry; do not maintain another target list here. Using it requires installation on a Linux server and GitHub credentials with access to this repository. A generated target does not prove that a private server has adopted it; verify the installed service's report. The guard does not collect data, create dummy commits or change source/check timestamps. Successful collection and published data freshness still need monitoring.
 <!-- /schedule-reliability -->
+
+## Consumer product topics
+
+The [topic directory](https://coolcode.ca/recallradar/records/) groups notices under Health Canada’s own category labels. Each topic lists the twelve most recently updated non-archived notices. The search link opens the same complete category with brand, product and archive filters. A notice can appear in several groups. A topic appears in the result sitemap when its snapshot contains at least one notice. The existing daily workflow rebuilds these pages from the same source downloads. Edit `web/product-topics.json` to add another exact category label from the export.
 
 ## Ready-to-use searches
 

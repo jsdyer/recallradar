@@ -14,12 +14,13 @@
 <body data-tool-id="recallradar">
 <a class="skip" href="#main">Skip to search</a>
 <header><div class="wrap"><a href="../">CoolCode.ca</a><a href="https://github.com/jsdyer/recallradar">Source code</a></div></header>
-<section class="hero"><div class="wrap"><p class="tool-name">Recall Radar</p><h1>Canadian Recall Search by Vehicle, Product or Brand</h1><!-- case-context --><nav class="task-entries" aria-label="Start here"><a href="#query">Choose a vehicle or search notices</a><a href="./ford-f150.html">Ford F-150 Recalls in Canada</a><a href="./ford-escape.html">Ford Escape Recalls in Canada</a></nav><p>Look up Canadian safety notices for food, household products, electronics and vehicles. Save the products you want to check again.</p></div></section>
+<section class="hero"><div class="wrap"><p class="tool-name">Recall Radar</p><h1>Canadian Recall Search by Vehicle, Product or Brand</h1><!-- case-context --><nav class="task-entries" aria-label="Start here"><a href="#query">Choose a vehicle or search notices</a><a href="./records/">Browse product recall topics</a><a href="./ford-f150.html">Ford F-150 Recalls in Canada</a><a href="./ford-escape.html">Ford Escape Recalls in Canada</a></nav><p>Look up Canadian safety notices for food, household products, electronics and vehicles. Save the products you want to check again.</p></div></section>
 <main id="main" class="wrap">
 <section class="panel" aria-labelledby="search-title">
 <h2 id="search-title">Search recalls</h2>
 <form id="search" class="filters">
 <label class="keywords">Product, brand, model or recall number<input id="query" type="search" maxlength="150" autocomplete="off" placeholder="Try Whirlpool, Ford Escape, or lithium"></label>
+<label>Consumer product category<select id="category"><option value="">All categories</option><!-- product-categories --></select></label>
 <label>Issuer<select id="issuer"><option value="">All issuers</option><option value="TC">Transport Canada</option><option value="CFIA">Canadian Food Inspection Agency</option><option value="other">Health Canada and other issuers</option></select></label>
 <label>Vehicle make and model<select id="vehicle"><option value="">All listed vehicles and products</option></select></label>
 <label>Model year<select id="model-year" disabled><option value="">Any model year</option></select></label>
